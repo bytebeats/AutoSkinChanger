@@ -1,69 +1,71 @@
-package me.bytebeats.skinchanger;
+package me.bytebeats.skinchanger
 
-import android.app.Application;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.text.TextUtils;
-
-import java.lang.reflect.Method;
-import java.util.Observable;
+import android.app.Application
+import me.bytebeats.skinchanger.SkinManager
+import android.text.TextUtils
+import me.bytebeats.skinchanger.SkinResources
+import android.content.res.AssetManager
+import java.lang.reflect.Method
+import android.content.res.Resources
+import android.content.pm.PackageManager
+import android.content.pm.PackageInfo
+import java.lang.Exception
+import kotlin.jvm.Volatile
+import me.bytebeats.skinchanger.SkinLifeCycleCallback
+import java.util.*
 
 /**
  * @Author bytebeats
- * @Email <happychinapc@gmail.com>
+ * @Email <happychinapc></happychinapc>@gmail.com>
  * @Github https://github.com/bytebeats
  * @Created on 2021/1/12 19:55
  * @Version 1.0
  * @Description TO-DO
  */
+class SkinManager private constructor(private val mApp: Application) : Observable() {
+    val instance: SkinManager?
+        get() = Companion.instance
 
-public class SkinManager extends Observable {
-    private Application mApp;
-    private static volatile SkinManager instance;
+    fun load(apk: String?) {
+        if (TextUtils.isEmpty(apk)) {
+            SkinResources.instance?.reset()
+        } else {
+            try {
+                val assetManager = AssetManager::class.java.newInstance()
+                val method = assetManager.javaClass.getDeclaredMethod("addAssetPath", String::class.java)
+                method.isAccessible = true
+                method.invoke(assetManager, apk)
 
-    private SkinManager(Application application) {
-        mApp = application;
-        mApp.registerActivityLifecycleCallbacks(new SkinLifeCycleCallback());
+                //app默认资源
+                val resources = mApp.resources
+                val skinResources = Resources(assetManager, resources.displayMetrics, resources.configuration)
+                val pm = mApp.packageManager
+                val pi = pm.getPackageInfo(apk!!, PackageManager.GET_ACTIVITIES)
+                val packageName = pi.packageName
+                SkinResources.instance?.applySkin(skinResources, packageName)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        setChanged()
+        notifyObservers()
     }
 
-    public static void init(Application application) {
-        if (instance == null) {
-            synchronized (SkinManager.class) {
-                if (instance == null) {
-                    instance = new SkinManager(application);
+    companion object {
+        @Volatile
+        private var instance: SkinManager? = null
+        fun init(application: Application) {
+            if (instance == null) {
+                synchronized(SkinManager::class.java) {
+                    if (instance == null) {
+                        instance = SkinManager(application)
+                    }
                 }
             }
         }
     }
 
-    public SkinManager getInstance() {
-        return instance;
-    }
-
-    public void load(String apk) {
-        if (TextUtils.isEmpty(apk)) {
-            SkinResources.getInstance().reset();
-        } else {
-            try {
-                AssetManager assetManager = AssetManager.class.newInstance();
-                Method method = assetManager.getClass().getDeclaredMethod("addAssetPath", String.class);
-                method.setAccessible(true);
-                method.invoke(assetManager, apk);
-
-                //app默认资源
-                Resources resources = mApp.getResources();
-                Resources skinResources = new Resources(assetManager, resources.getDisplayMetrics(), resources.getConfiguration());
-                PackageManager pm = mApp.getPackageManager();
-                PackageInfo pi = pm.getPackageInfo(apk, PackageManager.GET_ACTIVITIES);
-                String packageName = pi.packageName;
-                SkinResources.getInstance().applySkin(skinResources, packageName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        setChanged();
-        notifyObservers();
+    init {
+        mApp.registerActivityLifecycleCallbacks(SkinLifeCycleCallback())
     }
 }

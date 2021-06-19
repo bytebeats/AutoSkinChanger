@@ -77,7 +77,7 @@ class SkinAttribute {
             for (pair in skinPairs) {
                 when (pair.attriName) {
                     "background" -> {
-                        val background = SkinResources.getInstance().getBackground(pair.resId)
+                        val background = SkinResources.instance!!.getBackground(pair.resId)
                         if (background is Int) {
                             view.setBackgroundColor(background)
                         } else {
@@ -85,7 +85,7 @@ class SkinAttribute {
                         }
                     }
                     "src" -> {
-                        val src = SkinResources.getInstance().getBackground(pair.resId)
+                        val src = SkinResources.instance!!.getBackground(pair.resId)
                         if (src is Int) {
                             (view as ImageView).setImageDrawable(ColorDrawable(src))
                         } else {
@@ -93,28 +93,28 @@ class SkinAttribute {
                         }
                     }
                     "textColor" -> {
-                        (view as TextView).setTextColor(SkinResources.getInstance().getColorStateList(pair.resId))
+                        (view as TextView).setTextColor(SkinResources.instance!!.getColorStateList(pair.resId))
                     }
                     "drawableLeft" -> {
-                        left = SkinResources.getInstance().getDrawable(pair.resId)
+                        left = SkinResources.instance!!.getDrawable(pair.resId)
                     }
                     "drawableTop" -> {
-                        top = SkinResources.getInstance().getDrawable(pair.resId)
+                        top = SkinResources.instance!!.getDrawable(pair.resId)
                     }
                     "drawableRight" -> {
-                        right = SkinResources.getInstance().getDrawable(pair.resId)
+                        right = SkinResources.instance!!.getDrawable(pair.resId)
                     }
                     "drawableBottom" -> {
-                        bottom = SkinResources.getInstance().getDrawable(pair.resId)
+                        bottom = SkinResources.instance!!.getDrawable(pair.resId)
                     }
                     "drawableStart" -> {
-                        start = SkinResources.getInstance().getDrawable(pair.resId)
+                        start = SkinResources.instance!!.getDrawable(pair.resId)
                     }
                     "drawableEnd" -> {
-                        end = SkinResources.getInstance().getDrawable(pair.resId)
+                        end = SkinResources.instance!!.getDrawable(pair.resId)
                     }
                     "text" -> {
-                        val text = SkinResources.getInstance().getString(pair.resId)
+                        val text = SkinResources.instance!!.getString(pair.resId)
                         (view as TextView).text = text
                     }
                 }
