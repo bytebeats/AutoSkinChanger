@@ -1,6 +1,8 @@
-package me.bytebeats.skinchanger
+package me.bytebeats.skinchanger.demo
 
 import android.app.Application
+import me.bytebeats.skinchanger.SkinManager
+import me.bytebeats.skinchanger.SkinResources
 
 /**
  * @Author bytebeats
