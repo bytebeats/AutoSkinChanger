@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import java.lang.ClassCastException
+import java.lang.IllegalArgumentException
 import java.lang.RuntimeException
 import java.lang.reflect.Constructor
+import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 /**
@@ -18,6 +21,13 @@ import java.util.*
  */
 
 class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer {
+    /**
+     * in case SkinLayoutFactory2 not work.
+     * not used for now
+     */
+    var mSrcFactory: LayoutInflater.Factory? = null
+    var mSrcFactory2: LayoutInflater.Factory2? = null
+
     private val skinAttributes by lazy { SkinAttribute() }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
@@ -52,14 +62,24 @@ class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer {
                 val clazz = context.classLoader.loadClass(name).asSubclass(View::class.java)
                 constructor = clazz.getConstructor(Context::class.java, AttributeSet::class.java)
                 mConstructorMap[name] = constructor
-            } catch (e: RuntimeException) {
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+            } catch (e: ClassCastException) {
+                e.printStackTrace()
+            } catch (e: NoSuchMethodException) {
                 e.printStackTrace()
             }
         }
         if (constructor != null) {
             try {
                 return constructor.newInstance(constructor, attrs)
-            } catch (e: RuntimeException) {
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
+            } catch (e: InvocationTargetException) {
+                e.printStackTrace()
+            } catch (e: InstantiationException) {
                 e.printStackTrace()
             }
         }
@@ -72,6 +92,6 @@ class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer {
 
     private companion object {
         private val mConstructorMap = mutableMapOf<String, Constructor<out View>>()
-        private val mClassPrefixList = listOf("android.view.", "android.widget.", "android.webkit.")
+        private val mClassPrefixList = listOf("android.view.", "android.widget.", "android.webkit.", "android.app.")
     }
 }
