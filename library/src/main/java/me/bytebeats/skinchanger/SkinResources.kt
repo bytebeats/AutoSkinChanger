@@ -7,7 +7,6 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.content.res.Resources.NotFoundException
 import kotlin.jvm.Volatile
-import me.bytebeats.skinchanger.SkinResources
 
 /**
  * @Author bytebeats

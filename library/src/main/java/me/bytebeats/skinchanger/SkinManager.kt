@@ -1,17 +1,12 @@
 package me.bytebeats.skinchanger
 
 import android.app.Application
-import me.bytebeats.skinchanger.SkinManager
 import android.text.TextUtils
-import me.bytebeats.skinchanger.SkinResources
 import android.content.res.AssetManager
-import java.lang.reflect.Method
 import android.content.res.Resources
 import android.content.pm.PackageManager
-import android.content.pm.PackageInfo
 import java.lang.Exception
 import kotlin.jvm.Volatile
-import me.bytebeats.skinchanger.SkinLifeCycleCallback
 import java.util.*
 
 /**
