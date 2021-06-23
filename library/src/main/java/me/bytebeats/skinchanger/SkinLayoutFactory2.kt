@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import java.lang.ClassCastException
 import java.lang.IllegalArgumentException
-import java.lang.RuntimeException
 import java.lang.reflect.Constructor
 import java.lang.reflect.InvocationTargetException
 import java.util.*
