@@ -52,6 +52,9 @@ class SkinAttribute {
         }
     }
 
+    fun clear() {
+        skinViews.clear()
+    }
 
     private companion object {
         private val mAttributes = listOf(

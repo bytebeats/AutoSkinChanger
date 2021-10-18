@@ -4,6 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import java.lang.ClassCastException
 import java.lang.IllegalArgumentException
 import java.lang.reflect.Constructor
@@ -19,7 +23,7 @@ import java.util.*
  * @Description TO-DO
  */
 
-class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer {
+class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer, LifecycleEventObserver {
     /**
      * in case SkinLayoutFactory2 not work.
      * not used for now
@@ -52,7 +56,6 @@ class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer {
         }
         return null
     }
-
 
     private fun createView(name: String, context: Context, attrs: AttributeSet): View? {
         var constructor = mConstructorMap[name]
@@ -87,6 +90,14 @@ class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer {
 
     override fun update(o: Observable?, arg: Any?) {
         skinAttributes.applySkin()
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_DESTROY -> skinAttributes.clear()
+            else -> {
+            }
+        }
     }
 
     private companion object {
