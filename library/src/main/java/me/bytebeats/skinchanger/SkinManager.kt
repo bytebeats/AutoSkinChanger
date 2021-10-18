@@ -58,6 +58,13 @@ class SkinManager private constructor(private val mApp: Application) : Observabl
                 }
             }
         }
+        fun addObserver(observer: Observer) {
+            instance?.addObserver(observer)
+        }
+
+        fun deleteObserver(observer: Observer) {
+            instance?.deleteObserver(observer)
+        }
     }
 
     init {

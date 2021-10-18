@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.core.view.LayoutInflaterCompat
 import java.lang.RuntimeException
+import java.util.*
 
 /**
  * @Author bytebeats
@@ -33,6 +34,7 @@ class SkinLifeCycleCallback : Application.ActivityLifecycleCallbacks {
 //        }
 //        LayoutInflaterCompat.setFactory2(inflater, factory2)
         forceSetFactory2(inflater, factory2)
+        SkinManager.addObserver(factory2)
     }
 
 
@@ -46,7 +48,11 @@ class SkinLifeCycleCallback : Application.ActivityLifecycleCallbacks {
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
 
-    override fun onActivityDestroyed(activity: Activity) {}
+    override fun onActivityDestroyed(activity: Activity) {
+        if (activity.layoutInflater.factory2 is Observer) {
+            SkinManager.deleteObserver(activity.layoutInflater.factory2 as Observer)
+        }
+    }
 
     companion object {
         private fun forceSetFactory2(inflater: LayoutInflater, factory2: SkinLayoutFactory2) {
