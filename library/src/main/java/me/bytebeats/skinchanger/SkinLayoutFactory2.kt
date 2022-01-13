@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import java.lang.ClassCastException
 import java.lang.IllegalArgumentException
@@ -98,6 +97,15 @@ class SkinLayoutFactory2 : LayoutInflater.Factory2, Observer, LifecycleEventObse
             else -> {
             }
         }
+    }
+
+    fun loadProgrammaticView(view: View, attrs: List<SkinPair>) {
+        skinAttributes.load(view, attrs)
+    }
+
+    fun loadProgrammaticView(view: View, attrName: String, attrResId: Int) {
+        val skinPair = SkinPair(attrName, attrResId)
+        loadProgrammaticView(view, listOf(skinPair))
     }
 
     private companion object {

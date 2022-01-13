@@ -46,6 +46,12 @@ class SkinAttribute {
         }
     }
 
+    fun load(view: View?, attrs: List<SkinPair>?) {
+        if (view != null && !attrs.isNullOrEmpty()) {
+            skinViews.add(SkinView(view, attrs))
+        }
+    }
+
     fun applySkin() {
         for (skinView in skinViews) {
             skinView.applySkin()
@@ -133,6 +139,4 @@ class SkinAttribute {
             }
         }
     }
-
-    data class SkinPair(val attrName: String, val resId: Int)
 }
