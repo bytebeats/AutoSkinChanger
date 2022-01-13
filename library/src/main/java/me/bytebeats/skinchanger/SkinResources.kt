@@ -1,11 +1,13 @@
 package me.bytebeats.skinchanger
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.text.TextUtils
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.content.res.Resources.NotFoundException
+import android.os.Build
 import kotlin.jvm.Volatile
 
 /**
@@ -16,7 +18,7 @@ import kotlin.jvm.Volatile
  * @Version 1.0
  * @Description TO-DO
  */
-class SkinResources private constructor(context: Context) {
+class SkinResources private constructor(private val context: Context) {
     private var mSkinResources: Resources? = null
     private var mSkinPackageName: String? = null
     private var isDefaultSkin = true
@@ -26,6 +28,8 @@ class SkinResources private constructor(context: Context) {
         mSkinPackageName = ""
         isDefaultSkin = true
     }
+
+    private fun requireAtLeastM(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
     fun applySkin(resources: Resources?, pkgName: String?) {
         mSkinResources = resources
@@ -52,24 +56,32 @@ class SkinResources private constructor(context: Context) {
         } else mSkinResources!!.getColor(skinId)
     }
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     fun getColorStateList(resId: Int): ColorStateList {
         if (isDefaultSkin) {
-            return mAppResources.getColorStateList(resId)
+            return if (requireAtLeastM()) mAppResources.getColorStateList(resId, context.theme)
+            else mAppResources.getColorStateList(resId)
         }
         val skinId = getIdentifier(resId)
         return if (skinId == 0) {
-            mAppResources.getColorStateList(resId)
-        } else mSkinResources!!.getColorStateList(skinId)
+            if (requireAtLeastM()) mAppResources.getColorStateList(resId, context.theme)
+            else mAppResources.getColorStateList(resId)
+        } else if (requireAtLeastM()) mSkinResources!!.getColorStateList(resId, context.theme)
+        else mSkinResources!!.getColorStateList(resId)
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     fun getDrawable(resId: Int): Drawable {
         if (isDefaultSkin) {
-            return mAppResources.getDrawable(resId)
+            return if (requireAtLeastM()) mAppResources.getDrawable(resId, context.theme)
+            else mAppResources.getDrawable(resId)
         }
         val skinId = getIdentifier(resId)
         return if (skinId == 0) {
-            mAppResources.getDrawable(resId)
-        } else mSkinResources!!.getDrawable(skinId)
+            if (requireAtLeastM()) mAppResources.getDrawable(resId, context.theme)
+            else mAppResources.getDrawable(resId)
+        } else if (requireAtLeastM()) mSkinResources!!.getDrawable(resId, context.theme)
+        else mSkinResources!!.getDrawable(resId)
     }
 
     fun getBackground(resId: Int): Any {

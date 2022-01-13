@@ -22,10 +22,10 @@ class SkinManager private constructor(private val mApp: Application) : Observabl
         get() = Companion.instance
 
     fun load(apk: String?) {
-        if (TextUtils.isEmpty(apk)) {
-            SkinResources.instance?.reset()
-        } else {
-            try {
+        try {
+            if (TextUtils.isEmpty(apk)) {
+                SkinResources.instance?.reset()
+            } else {
                 val assetManager = AssetManager::class.java.newInstance()
                 val method = assetManager.javaClass.getDeclaredMethod("addAssetPath", String::class.java)
                 method.isAccessible = true
@@ -38,12 +38,13 @@ class SkinManager private constructor(private val mApp: Application) : Observabl
                 val pi = pm.getPackageInfo(apk!!, PackageManager.GET_ACTIVITIES)
                 val packageName = pi.packageName
                 SkinResources.instance?.applySkin(skinResources, packageName)
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            setChanged()
+            notifyObservers()
         }
-        setChanged()
-        notifyObservers()
     }
 
     companion object {
@@ -59,6 +60,7 @@ class SkinManager private constructor(private val mApp: Application) : Observabl
             }
             SkinResources.init(application)
         }
+
         fun addObserver(observer: Observer) {
             instance?.addObserver(observer)
         }

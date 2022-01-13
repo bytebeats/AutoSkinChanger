@@ -4,7 +4,9 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
+import android.widget.AbsListView
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.TextView
 
 /**
@@ -72,8 +74,9 @@ class SkinAttribute {
             "drawableTop",
             "drawableBottom",
             "text",
+            "divider",
+            "listSelector"
         )
-        // TODO: 2022/1/13 how to handle divider and listSelector for ListView or RecyclerView ?
     }
 
     data class SkinView(val view: View, val skinPairs: List<SkinPair>) {
@@ -126,6 +129,22 @@ class SkinAttribute {
                     "text" -> {
                         val text = SkinResources.instance!!.getString(pair.resId)
                         (view as TextView).text = text
+                    }
+                    "divider" -> {
+                        val divider = SkinResources.instance!!.getBackground(pair.resId)
+                        if (divider is Int) {
+                            (view as ListView).selector = ColorDrawable(divider)
+                        } else {
+                            (view as ListView).selector = divider as Drawable
+                        }
+                    }
+                    "listSelector" -> {
+                        val selector = SkinResources.instance!!.getBackground(pair.resId)
+                        if (selector is Int) {
+                            (view as AbsListView).selector = ColorDrawable(selector)
+                        } else {
+                            (view as AbsListView).selector = selector as Drawable
+                        }
                     }
                 }
             }
