@@ -17,6 +17,5 @@ class SkinChangerApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         SkinManager.init(this)
-        SkinResources.init(this)
     }
 }

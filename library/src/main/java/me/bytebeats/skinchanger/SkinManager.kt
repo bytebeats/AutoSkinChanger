@@ -57,6 +57,7 @@ class SkinManager private constructor(private val mApp: Application) : Observabl
                     }
                 }
             }
+            SkinResources.init(application)
         }
         fun addObserver(observer: Observer) {
             instance?.addObserver(observer)

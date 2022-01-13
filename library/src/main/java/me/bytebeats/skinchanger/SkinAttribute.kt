@@ -41,7 +41,7 @@ class SkinAttribute {
                 }
             }
         }
-        if (skinPairs.isNotEmpty() || view is TextView) {
+        if (skinPairs.isNotEmpty() || view is TextView || view is SkinChangeable) {
             skinViews.add(SkinView(view, skinPairs))
         }
     }
@@ -78,7 +78,7 @@ class SkinAttribute {
             var start: Drawable? = null
             var end: Drawable? = null
             for (pair in skinPairs) {
-                when (pair.attriName) {
+                when (pair.attrName) {
                     "background" -> {
                         val background = SkinResources.instance!!.getBackground(pair.resId)
                         if (background is Int) {
@@ -128,8 +128,11 @@ class SkinAttribute {
             if (start != null || end != null || top != null || bottom != null) {
                 (view as TextView).setCompoundDrawablesWithIntrinsicBounds(start, top, end, bottom)
             }
+            if (view is SkinChangeable) {//customized View
+                view.applySkin()
+            }
         }
     }
 
-    data class SkinPair(val attriName: String, val resId: Int)
+    data class SkinPair(val attrName: String, val resId: Int)
 }
