@@ -73,6 +73,7 @@ class SkinAttribute {
             "drawableBottom",
             "text",
         )
+        // TODO: 2022/1/13 how to handle divider and listSelector for ListView or RecyclerView ?
     }
 
     data class SkinView(val view: View, val skinPairs: List<SkinPair>) {
