@@ -12,7 +12,7 @@ import kotlin.jvm.Volatile
 
 /**
  * @Author bytebeats
- * @Email <happychinapc></happychinapc>@gmail.com>
+ * @Email <happychinapc@gmail.com>
  * @Github https://github.com/bytebeats
  * @Created on 2021/1/12 20:51
  * @Version 1.0

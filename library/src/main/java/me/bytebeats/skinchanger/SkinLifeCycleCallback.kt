@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.ComponentActivity
 import androidx.core.view.LayoutInflaterCompat
 import java.lang.RuntimeException
 import java.util.*
@@ -35,6 +36,9 @@ class SkinLifeCycleCallback : Application.ActivityLifecycleCallbacks {
 //        LayoutInflaterCompat.setFactory2(inflater, factory2)
         forceSetFactory2(inflater, factory2)
         SkinManager.addObserver(factory2)
+        if (activity is ComponentActivity) {
+            activity.lifecycle.addObserver(factory2)
+        }
     }
 
 

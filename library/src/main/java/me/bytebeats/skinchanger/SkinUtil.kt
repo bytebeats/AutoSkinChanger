@@ -13,6 +13,6 @@ object SkinUtil {
             resIds[i] = typedArray.getResourceId(i, 0)
         }
         typedArray.recycle()
-        return resIds;
+        return resIds
     }
 }

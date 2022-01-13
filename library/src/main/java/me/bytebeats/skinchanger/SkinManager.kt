@@ -11,7 +11,7 @@ import java.util.*
 
 /**
  * @Author bytebeats
- * @Email <happychinapc></happychinapc>@gmail.com>
+ * @Email <happychinapc@gmail.com>
  * @Github https://github.com/bytebeats
  * @Created on 2021/1/12 19:55
  * @Version 1.0
